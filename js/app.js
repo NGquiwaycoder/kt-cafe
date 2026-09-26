@@ -110,20 +110,26 @@
   }
   var RED = ['#E4572E', '#A8360F'], GREEN = ['#8CC63F', '#4F7F1E'];
 
-  /* Логотип: жёлтая тарелка, палочки складываются в «К», вилка — в «Т» */
+  /* Логотип: бат фо превращается в жёлтый круг, «К» встаёт как столик, две палочки складываются в «Т».
+     Порядок кадров — в css/style.css (раздел «Логотип»). */
   function logo(anim) {
     var band = function (d) { return '<path d="' + d + '" stroke="#FFF6EA" stroke-width="2.4" stroke-linecap="butt"/>'; };
-    var letters =
-      '<g class="lg-k1"><path d="M32 32v58" stroke-width="10"/>' + band('M27 38h10') + '</g>' +
-      '<g class="lg-k2"><path d="M60 31L37 62" stroke-width="8"/>' + band('M54.2 31.3l7.2 5.4') + '</g>' +
-      '<g class="lg-k3"><path d="M38 58l24 33" stroke-width="8"/>' + band('M56 90.3l7.2-5.2') + '</g>' +
-      '<g class="lg-t"><path d="M86 45v46" stroke-width="9"/><path d="M70 44h32" stroke-width="8"/><path d="M72 44V31M80.7 44V31M89.3 44V31M98 44V31" stroke-width="4"/></g>';
+    var k = '<g class="lg-k"><path d="M32 32v58" stroke-width="10"/>' +
+      '<g class="lg-legs"><path d="M60 31L37 62" stroke-width="8"/><path d="M38 58l24 33" stroke-width="8"/></g></g>';
+    var stickA = '<g class="lg-sa"><path d="M0 0h32" stroke-width="8"/>' + band('M27 -4v8') + '</g>';
+    var stickB = '<g class="lg-sb"><path d="M0 0h56" stroke-width="9"/>' + band('M51 -4.5v9') + '</g>';
     return '<svg class="logo' + (anim ? ' anim' : '') + '" viewBox="0 0 120 120" fill="none" stroke-linecap="round" role="img" aria-label="Логотип K-T">' +
-      '<circle class="lg-disc" cx="60" cy="60" r="57" fill="#F2C14E"/>' +
+      '<circle class="lg-dash" cx="60" cy="60" r="57" stroke="#E3A628" stroke-width="3" stroke-dasharray="7 9"/>' +
+      '<path class="lg-bowl" d="M3 60A57 57 0 0 0 117 60Z" fill="#F2C14E"/>' +
+      '<path class="lg-top" d="M3 61V60A57 57 0 0 1 117 60V61Z" fill="#F2C14E"/>' +
       '<circle class="lg-rim" cx="60" cy="60" r="49" stroke="#E3A628" stroke-width="3"/>' +
-      '<g class="lg-steam" stroke="#FFF6EA" stroke-width="2.5"><path d="M48 21c-3-4 3-6 0-10"/><path d="M60 19c-3-4 3-6 0-10"/><path d="M72 21c-3-4 3-6 0-10"/></g>' +
-      '<g class="lg-letters" stroke="#C9331D">' + letters + '</g>' +
+      '<g class="lg-steam" stroke="#B9A58E" stroke-width="2.2"><path d="M47 42c-3-4 3-6 0-10"/><path d="M54 41c-3-4 3-6 0-10"/><path d="M61 42c-3-4 3-6 0-10"/></g>' +
+      '<g class="lg-letters" stroke="#C9331D">' + k + stickA + stickB + '</g>' +
       '</svg>';
+  }
+  function replayLogo(el) {
+    var svg = el && el.querySelector('.logo'); if (!svg) return;
+    svg.classList.remove('anim'); svg.getBoundingClientRect(); svg.classList.add('anim');
   }
 
   /* ---------- шапка, тема, нижнее меню ---------- */
@@ -421,6 +427,7 @@
 
   /* ---------- клики ---------- */
   document.addEventListener('click', function (e) {
+    var lg = e.target.closest('.logo-btn, .splash-logo'); if (lg) replayLogo(lg);
     var t = e.target.closest('button, [data-close-sheet]'); if (!t) return;
     var d = t.dataset;
     if (t.id === 'themeBtn') {

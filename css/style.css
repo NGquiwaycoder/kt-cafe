@@ -43,28 +43,63 @@ h1, h2, h3, .display { font-family: 'Unbounded', sans-serif; font-weight: 600; }
 .press:active { transform: scale(.96); }
 :focus-visible { outline: 3px solid #F2C14E; outline-offset: 2px; }
 
-/* ===== Логотип ===== */
+/* ===== Логотип =====
+   1) «К» лежит как столик, на нём бат фо, рядом две палочки
+   2) столик и палочки встают, бат уезжает вниз
+   3) бат вырастает в фон, у «К» вытягиваются ножки, палочки складываются в «Т»
+   4) бат заполняется до круга */
 .logo { display: block; overflow: visible; }
-.logo * { transform-box: fill-box; transform-origin: center; }
-.logo.anim .lg-disc { animation: lg-pop .6s cubic-bezier(.3,1.5,.5,1) both; }
-.logo.anim .lg-rim { animation: lg-fade .5s .2s both; }
-.logo.anim .lg-k1 { animation: lg-k1 .7s .25s cubic-bezier(.2,.9,.3,1.25) both; }
-.logo.anim .lg-k2 { animation: lg-k2 .7s .4s cubic-bezier(.2,.9,.3,1.25) both; }
-.logo.anim .lg-k3 { animation: lg-k3 .7s .5s cubic-bezier(.2,.9,.3,1.25) both; }
-.logo.anim .lg-t { animation: lg-t .8s .65s cubic-bezier(.3,1.6,.5,1) both; }
-.logo .lg-steam path { animation: lg-steam 2.4s ease-out infinite; opacity: 0; }
-.logo .lg-steam path:nth-child(2) { animation-delay: .8s; }
-.logo .lg-steam path:nth-child(3) { animation-delay: 1.6s; }
-.logo .lg-letters { filter: drop-shadow(1.5px 2.5px 0 rgba(122,42,16,.3)); }
+.logo .lg-k, .logo .lg-legs, .logo .lg-sa, .logo .lg-sb, .logo .lg-bowl, .logo .lg-top, .logo .lg-dash { transform-box: view-box; }
+.logo .lg-k, .logo .lg-legs { transform-origin: 37px 60px; }
+.logo .lg-bowl, .logo .lg-top, .logo .lg-dash { transform-origin: 60px 60px; }
+.logo .lg-sa, .logo .lg-sb { transform-origin: 0 0; }
+.logo .lg-sa { transform: translate(70px, 36px) rotate(0deg) scale(1, 1); }
+.logo .lg-sb { transform: translate(86px, 36px) rotate(90deg) scale(1, 1); }
+.logo .lg-dash, .logo .lg-steam { opacity: 0; }
+.logo .lg-letters { filter: drop-shadow(1.5px 2.5px 0 rgba(122,42,16,.35)); transform-box: fill-box; transform-origin: center; }
+.logo.anim .lg-k { animation: lg-k 2s ease-in-out both; }
+.logo.anim .lg-legs { animation: lg-legs 2s ease-in-out both; }
+.logo.anim .lg-sa { animation: lg-sa 2s ease-in-out both; }
+.logo.anim .lg-sb { animation: lg-sb 2s ease-in-out both; }
+.logo.anim .lg-bowl { animation: lg-bowl 2s ease-in-out both; }
+.logo.anim .lg-top { animation: lg-top 2s ease-in-out both; }
+.logo.anim .lg-dash { animation: lg-dash 2s ease-in-out both; }
+.logo.anim .lg-rim { animation: lg-rim 2s ease-in-out both; }
+.logo.anim .lg-steam { animation: lg-steam-show 2s ease-in-out both; }
+.logo.anim .lg-steam path { animation: lg-steam .8s ease-out infinite; }
+.logo.anim .lg-steam path:nth-child(2) { animation-delay: .25s; }
+.logo.anim .lg-steam path:nth-child(3) { animation-delay: .5s; }
 .logo-btn:hover .lg-letters, .splash-logo:hover .lg-letters { animation: lg-wiggle .6s ease; }
-@keyframes lg-pop { from { transform: scale(0); } to { transform: none; } }
-@keyframes lg-fade { from { opacity: 0; } to { opacity: 1; } }
-@keyframes lg-k1 { from { opacity: 0; transform: translate(-34px, -44px) rotate(-40deg); } to { opacity: 1; transform: none; } }
-@keyframes lg-k2 { from { opacity: 0; transform: translate(46px, -38px) rotate(50deg); } to { opacity: 1; transform: none; } }
-@keyframes lg-k3 { from { opacity: 0; transform: translate(46px, 40px) rotate(-50deg); } to { opacity: 1; transform: none; } }
-@keyframes lg-t { from { opacity: 0; transform: translateY(-70px) rotate(25deg); } to { opacity: 1; transform: none; } }
-@keyframes lg-steam { 0% { opacity: 0; transform: translateY(6px); } 40% { opacity: .9; } 100% { opacity: 0; transform: translateY(-8px) scaleX(1.4); } }
-@keyframes lg-wiggle { 0%,100% { transform: none; } 30% { transform: rotate(-6deg); } 60% { transform: rotate(4deg); } }
+@keyframes lg-k {
+  0% { opacity: 0; transform: translate(23px, 17px) rotate(90deg); }
+  12%, 30% { opacity: 1; transform: translate(23px, 17px) rotate(90deg); }
+  50%, 100% { opacity: 1; transform: translate(0px, 0px) rotate(0deg); }
+}
+@keyframes lg-legs { 0%, 50% { transform: scale(.72); } 75%, 100% { transform: scale(1); } }
+@keyframes lg-sa {
+  0% { opacity: 0; transform: translate(66px, 49px) rotate(-40deg) scale(1.05, .7); }
+  12%, 30% { opacity: 1; transform: translate(66px, 49px) rotate(-40deg) scale(1.05, .7); }
+  50% { opacity: 1; transform: translate(92px, 70px) rotate(-90deg) scale(1.05, .7); }
+  75%, 100% { opacity: 1; transform: translate(70px, 36px) rotate(0deg) scale(1, 1); }
+}
+@keyframes lg-sb {
+  0% { opacity: 0; transform: translate(70px, 53.6px) rotate(-40deg) scale(.6, .62); }
+  12%, 30% { opacity: 1; transform: translate(70px, 53.6px) rotate(-40deg) scale(.6, .62); }
+  50% { opacity: 1; transform: translate(100px, 70px) rotate(-90deg) scale(.6, .62); }
+  75%, 100% { opacity: 1; transform: translate(86px, 36px) rotate(-270deg) scale(1, 1); }
+}
+@keyframes lg-bowl {
+  0% { opacity: 0; transform: translate(0px, -16px) scale(.4); }
+  12%, 30% { opacity: 1; transform: translate(0px, -16px) scale(.4); }
+  50% { opacity: 1; transform: translate(0px, 35px) scale(.4); }
+  75%, 100% { opacity: 1; transform: translate(0px, 0px) scale(1); }
+}
+@keyframes lg-top { 0%, 75% { transform: scaleY(0); } 100% { transform: scaleY(1); } }
+@keyframes lg-dash { 0%, 55% { opacity: 0; } 65%, 80% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes lg-rim { 0%, 85% { opacity: 0; } 100% { opacity: 1; } }
+@keyframes lg-steam-show { 0% { opacity: 0; } 12%, 30% { opacity: 1; } 42%, 100% { opacity: 0; } }
+@keyframes lg-steam { 0% { opacity: 0; transform: translateY(4px); } 40% { opacity: 1; } 100% { opacity: 0; transform: translateY(-7px); } }
+@keyframes lg-wiggle { 0%,100% { transform: none; } 30% { transform: rotate(-5deg); } 60% { transform: rotate(3deg); } }
 
 /* ===== Шапка ===== */
 .topbar { position: sticky; top: 0; z-index: 30; background: var(--bg); border-bottom: 1px solid var(--line); transition: background-color .35s; }
